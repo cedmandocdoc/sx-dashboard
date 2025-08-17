@@ -1,10 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Metrics, Product, ProductManagerProductAddedEvent, ProductManagerProductStatusToggledEvent } from '../types';
-import getLocalStorageItem from '../utils/getLocalStorageItem';
 
 
 export const useProductMetrics = () => {
-  const [products, setProducts] = useState<Product[]>(() => getLocalStorageItem('sx:products') ?? []);
+  const [products, setProducts] = useState<Product[]>([]);
 
   const metrics = useMemo<Metrics>(() => {
     const total = products.length;
