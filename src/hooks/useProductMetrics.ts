@@ -1,6 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Metrics, Product, ProductManagerProductAddedEvent, ProductManagerProductStatusToggledEvent } from '../types';
+import { Product } from '../models/Product';
 
+type Metrics = {
+  total: number;
+  active: number;
+  inactive: number;
+}
 
 export const useProductMetrics = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -13,7 +18,7 @@ export const useProductMetrics = () => {
   }, [products]);
 
   useEffect(() => {
-    const handleProductAdded = (event: ProductManagerProductAddedEvent) => {
+    const handleProductAdded = (event: WindowEventMap['sx-product-manager:product-added']) => {
       const { product } = event.detail;
       if (product) {
         setProducts(prevProducts => [...prevProducts, product]);
@@ -22,7 +27,7 @@ export const useProductMetrics = () => {
 
 
 
-    const handleProductStatusToggled = (event: ProductManagerProductStatusToggledEvent) => {
+    const handleProductStatusToggled = (event: WindowEventMap['sx-product-manager:product-status-toggled']) => {
       const { productId, newStatus } = event.detail;
       if (productId && newStatus) {
         setProducts(prevProducts => 
@@ -35,12 +40,12 @@ export const useProductMetrics = () => {
       }
     };
 
-    window.addEventListener('sx-product-manager:product-added', handleProductAdded as EventListener);
-    window.addEventListener('sx-product-manager:product-status-toggled', handleProductStatusToggled as EventListener);
+    window.addEventListener('sx-product-manager:product-added', handleProductAdded);
+    window.addEventListener('sx-product-manager:product-status-toggled', handleProductStatusToggled);
 
     return () => {
-      window.removeEventListener('sx-product-manager:product-added', handleProductAdded as EventListener);
-      window.removeEventListener('sx-product-manager:product-status-toggled', handleProductStatusToggled as EventListener);
+      window.removeEventListener('sx-product-manager:product-added', handleProductAdded);
+      window.removeEventListener('sx-product-manager:product-status-toggled', handleProductStatusToggled);
     };
   }, []);
 
