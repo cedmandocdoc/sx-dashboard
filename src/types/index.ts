@@ -22,4 +22,5 @@ export interface ProductManagerProductStatusToggledEvent extends CustomEvent<{
   productId: string;
   oldStatus: 'active' | 'inactive';
   newStatus: 'active' | 'inactive';
-}>
+}> {
+}

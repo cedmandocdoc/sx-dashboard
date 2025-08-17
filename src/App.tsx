@@ -58,27 +58,8 @@ function App() {
           <Dashboard />
         </section>
 
-        {/* Product Manager Section */}
-        <section style={{ margin: '0 24px' }}>
-          <div style={{ marginBottom: '16px' }}>
-            <h2 style={{
-              margin: '0 0 8px 0',
-              fontSize: '24px',
-              fontWeight: '600',
-              color: '#212529',
-            }}>
-              Product Manager
-            </h2>
-            <p style={{
-              margin: 0,
-              color: '#6c757d',
-              fontSize: '14px',
-            }}>
-              Manage your product catalog (loaded as a microfrontend)
-            </p>
-          </div>
-          <RemoteProductManager />
-        </section>
+        
+        <RemoteProductManager />
       </main>
     </div>
   );
