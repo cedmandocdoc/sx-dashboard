@@ -48,10 +48,11 @@ class RemoteModuleErrorBoundary extends React.Component<
             fontSize: '14px',
             color: '#6c757d',
             marginBottom: '24px',
-            maxWidth: '400px',
             lineHeight: '1.4',
           }}>
-            Unable to connect to the {this.props.moduleName} microfrontend. Please make sure it's running.
+            Unable to connect to the {this.props.moduleName} microfrontend.
+            <br />
+            {this.state.error?.message}
           </div>
         </div>
       );

@@ -1,28 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Metrics, Product, ProductManagerProductAddedEvent, ProductManagerProductStatusToggledEvent } from '../types';
+import getLocalStorageItem from '../utils/getLocalStorageItem';
 
-// Load initial products from localStorage
-const loadProductsFromStorage = (): Product[] => {
-  try {
-    const stored = localStorage.getItem('sx:products');
-    if (stored) {
-      const products = JSON.parse(stored);
-      // Convert date strings back to Date objects
-      return products.map((product: any) => ({
-        ...product,
-        createdAt: new Date(product.createdAt)
-      }));
-    }
-  } catch (error) {
-    console.error('Error loading products from localStorage:', error);
-  }
-  return [];
-};
 
 export const useProductMetrics = () => {
-  const [products, setProducts] = useState<Product[]>(loadProductsFromStorage());
+  const [products, setProducts] = useState<Product[]>(() => getLocalStorageItem('sx:products') ?? []);
 
-  // Memoized metrics calculation from local products state
   const metrics = useMemo<Metrics>(() => {
     const total = products.length;
     const active = products.filter(p => p.status === 'active').length;
@@ -34,10 +17,7 @@ export const useProductMetrics = () => {
     const handleProductAdded = (event: ProductManagerProductAddedEvent) => {
       const { product } = event.detail;
       if (product) {
-        setProducts(prevProducts => [...prevProducts, {
-          ...product,
-          createdAt: new Date(product.createdAt)
-        }]);
+        setProducts(prevProducts => [...prevProducts, product]);
       }
     };
 
@@ -56,11 +36,9 @@ export const useProductMetrics = () => {
       }
     };
 
-    // Listen for specific product events
     window.addEventListener('sx-product-manager:product-added', handleProductAdded as EventListener);
     window.addEventListener('sx-product-manager:product-status-toggled', handleProductStatusToggled as EventListener);
 
-    // Cleanup function
     return () => {
       window.removeEventListener('sx-product-manager:product-added', handleProductAdded as EventListener);
       window.removeEventListener('sx-product-manager:product-status-toggled', handleProductStatusToggled as EventListener);

@@ -41,7 +41,7 @@ The dashboard communicates with the remote app through:
 ### Prerequisites
 - Node.js 16+
 - npm or yarn
-- Product Manager app running on port 4001
+- Product Manager app running (default port 4001)
 
 ### Installation
 
@@ -55,18 +55,25 @@ The dashboard communicates with the remote app through:
    npm install
    ```
 
-3. Ensure the Product Manager is running:
+3. (Optional) Create a `.env` file to customize ports:
+   ```bash
+   # .env file
+   PORT=4000
+   REMOTE_PORT=4001
+   ```
+
+4. Ensure the Product Manager is running:
    ```bash
    # In another terminal, from the sx-product-manager directory
    npm run dev
    ```
 
-4. Start the dashboard:
+5. Start the dashboard:
    ```bash
    npm run dev
    ```
 
-5. Open http://localhost:4000 to view the dashboard
+6. Open http://localhost:4000 to view the dashboard (or your custom PORT)
 
 ### Production Build
 
@@ -105,6 +112,23 @@ npm run preview
 2. **Status Updates**: Toggle products between active/inactive and watch the respective metric cards update
 3. **Responsive Design**: Resize the window to see the adaptive layout
 4. **Error Handling**: Stop the Product Manager app to see the error state
+
+## Environment Variables
+
+The dashboard supports the following environment variables:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PORT` | `4000` | Port for the dashboard development server |
+| `REMOTE_PORT` | `4001` | Port where the Product Manager remote is running |
+
+Create a `.env` file in the root directory to customize these values:
+
+```bash
+# .env
+PORT=4000
+REMOTE_PORT=4001
+```
 
 ## Development
 
