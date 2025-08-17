@@ -7,7 +7,7 @@ A microfrontend host application that displays real-time product metrics and int
 ### Prerequisites
 
 - Node.js >= 22.14.0 (use `nvm use` if you have nvm installed)
-- npm or yarn
+- npm
 - Product Manager app running (remote microfrontend)
 
 ### Environment
