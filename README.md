@@ -84,8 +84,11 @@ src/
 │   └── RemoteModuleLoader.tsx    # Remote app loading with error handling
 ├── hooks/
 │   └── useProductMetrics.ts      # Custom hook for metrics state management
+├── models/
+│   └── Product.ts                # Product data model definitions
 ├── types/
-│   └── index.ts                  # TypeScript type definitions
+│   ├── events.d.ts               # Custom event type definitions
+│   └── remote.d.ts               # Remote module type definitions
 └── remotes/
     └── RemoteProductManager.tsx  # Product Manager remote integration
 ```
