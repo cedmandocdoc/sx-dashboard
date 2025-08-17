@@ -6,15 +6,7 @@ const ProductModule = React.lazy(() => import("productManager/App"));
 
 export const RemoteProductManager: React.FC = () => {
   return (
-    <div
-      style={{
-        backgroundColor: "white",
-        borderRadius: "12px",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-        border: "1px solid #e9ecef",
-        overflow: "hidden",
-      }}
-    >
+    <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
       <RemoteModuleLoader moduleName="Product Manager">
         <ProductModule />
       </RemoteModuleLoader>

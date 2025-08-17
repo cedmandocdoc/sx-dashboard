@@ -6,28 +6,23 @@ export const Dashboard: React.FC = () => {
   const { metrics } = useProductMetrics();
 
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-      gap: '24px',
-      padding: '24px',
-    }}>
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6 p-6">
       <MetricCard
         title="Total Products"
         value={metrics.total}
-        color="#e3f2fd"
+        color="bg-blue-50"
         icon="📦"
       />
       <MetricCard
         title="Active Products"
         value={metrics.active}
-        color="#e8f5e8"
+        color="bg-green-50"
         icon="✅"
       />
       <MetricCard
         title="Inactive Products"
         value={metrics.inactive}
-        color="#fff3e0"
+        color="bg-orange-50"
         icon="⏸️"
       />
     </div>
