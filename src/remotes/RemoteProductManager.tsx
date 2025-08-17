@@ -1,5 +1,5 @@
 import React from "react";
-import RemoteModuleLoader from "./RemoteModuleLoader";
+import RemoteModuleLoader from "../components/RemoteModuleLoader";
 
 // @ts-ignore - Remote module
 const ProductModule = React.lazy(() => import("productManager/App"));

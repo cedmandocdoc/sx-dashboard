@@ -1,5 +1,5 @@
 import { Dashboard } from './components/Dashboard';
-import { RemoteProductManager } from './components/RemoteProductManager';
+import { RemoteProductManager } from './remotes/RemoteProductManager';
 
 function App() {
   return (
