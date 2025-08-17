@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface MetricCardProps {
+type MetricCardProps = {
   title: string;
   value: number;
   color: string;

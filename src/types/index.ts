@@ -1,10 +1,10 @@
-export interface Metrics {
+export type Metrics = {
   total: number;
   active: number;
   inactive: number;
 }
 
-export interface Product {
+export type Product = {
   id: string;
   title: string;
   sku: string;
@@ -13,14 +13,12 @@ export interface Product {
   createdAt: string;
 }
 
-export interface ProductManagerProductAddedEvent extends CustomEvent<{
+export type ProductManagerProductAddedEvent = CustomEvent<{
   product: Product;
-}> {
-}
+}>
 
-export interface ProductManagerProductStatusToggledEvent extends CustomEvent<{
+export type ProductManagerProductStatusToggledEvent = CustomEvent<{
   productId: string;
   oldStatus: 'active' | 'inactive';
   newStatus: 'active' | 'inactive';
-}> {
-}
+}>
