@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 
 // @ts-ignore - Remote module
-const ProductModule = React.lazy(() => import('productManager/ProductModule'));
+const ProductManager = React.lazy(() => import('productManager/ProductManager'));
 
 export const RemoteProductManager: React.FC = () => {
   return (
@@ -39,7 +39,7 @@ export const RemoteProductManager: React.FC = () => {
           </div>
         }
       >
-        <ProductModule />
+        <ProductManager />
       </Suspense>
     </div>
   );

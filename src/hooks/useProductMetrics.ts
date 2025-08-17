@@ -1,67 +1,71 @@
-import { useState, useEffect } from 'react';
-import { Metrics } from '../types';
+import { useState, useEffect, useMemo } from 'react';
+import { Metrics, Product, ProductManagerProductAddedEvent, ProductManagerProductStatusToggledEvent } from '../types';
+
+// Load initial products from localStorage
+const loadProductsFromStorage = (): Product[] => {
+  try {
+    const stored = localStorage.getItem('sx:products');
+    if (stored) {
+      const products = JSON.parse(stored);
+      // Convert date strings back to Date objects
+      return products.map((product: any) => ({
+        ...product,
+        createdAt: new Date(product.createdAt)
+      }));
+    }
+  } catch (error) {
+    console.error('Error loading products from localStorage:', error);
+  }
+  return [];
+};
 
 export const useProductMetrics = () => {
-  const [metrics, setMetrics] = useState<Metrics>({ total: 0, active: 0, inactive: 0 });
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [products, setProducts] = useState<Product[]>(loadProductsFromStorage());
+
+  // Memoized metrics calculation from local products state
+  const metrics = useMemo<Metrics>(() => {
+    const total = products.length;
+    const active = products.filter(p => p.status === 'active').length;
+    const inactive = products.filter(p => p.status === 'inactive').length;
+    return { total, active, inactive };
+  }, [products]);
 
   useEffect(() => {
-    let hasReceivedInitialData = false;
-
-    const handleProductEvent = (event: CustomEvent) => {
-      if (event.detail && event.detail.metrics) {
-        setMetrics(event.detail.metrics);
-        setError(null);
-        
-        if (!hasReceivedInitialData) {
-          setIsLoading(false);
-          hasReceivedInitialData = true;
-        }
+    const handleProductAdded = (event: ProductManagerProductAddedEvent) => {
+      const { product } = event.detail;
+      if (product) {
+        setProducts(prevProducts => [...prevProducts, {
+          ...product,
+          createdAt: new Date(product.createdAt)
+        }]);
       }
     };
 
-    // Listen for all product-related events
-    const eventTypes = [
-      'sx-product-manager:product-added',
-      'sx-product-manager:product-updated',
-      'sx-product-manager:product-removed',
-      'sx-product-manager:product-status-toggled',
-      'sx-product-manager:metrics-response'
-    ];
 
-    eventTypes.forEach(eventType => {
-      window.addEventListener(eventType, handleProductEvent as EventListener);
-    });
 
-    // Set a timeout to show error if no events are received
-    const timeoutId = setTimeout(() => {
-      if (!hasReceivedInitialData) {
-        setIsLoading(false);
-        setError('Product Manager not responding');
+    const handleProductStatusToggled = (event: ProductManagerProductStatusToggledEvent) => {
+      const { productId, newStatus } = event.detail;
+      if (productId && newStatus) {
+        setProducts(prevProducts => 
+          prevProducts.map(product =>
+            product.id === productId 
+              ? { ...product, status: newStatus }
+              : product
+          )
+        );
       }
-    }, 3000);
-
-    // Request initial data by dispatching a custom event
-    // This is a way to "ping" the product manager for current state
-    const requestInitialData = () => {
-      const event = new CustomEvent('sx-dashboard:request-metrics', {
-        bubbles: true
-      });
-      window.dispatchEvent(event);
     };
 
-    // Try to request initial data
-    requestInitialData();
+    // Listen for specific product events
+    window.addEventListener('sx-product-manager:product-added', handleProductAdded as EventListener);
+    window.addEventListener('sx-product-manager:product-status-toggled', handleProductStatusToggled as EventListener);
 
     // Cleanup function
     return () => {
-      clearTimeout(timeoutId);
-      eventTypes.forEach(eventType => {
-        window.removeEventListener(eventType, handleProductEvent as EventListener);
-      });
+      window.removeEventListener('sx-product-manager:product-added', handleProductAdded as EventListener);
+      window.removeEventListener('sx-product-manager:product-status-toggled', handleProductStatusToggled as EventListener);
     };
   }, []);
 
-  return { metrics, isLoading, error };
+  return { metrics };
 };
