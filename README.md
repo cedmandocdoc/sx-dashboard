@@ -1,6 +1,6 @@
 # Product Dashboard (Host App)
 
-A microfrontend host application that displays real-time product metrics and integrates the Product Manager remote application.
+A microfrontend host application that displays real-time product metrics and integrates the [Product Manager](https://github.com/cedmandocdoc/sx-product-manager) remote application.
 
 ## Setup
 
@@ -12,48 +12,44 @@ A microfrontend host application that displays real-time product metrics and int
 
 ### Environment
 
-Create a `.env` file in the root directory with the following variables:
+Copy `.env.sample` to `.env` and configure the following variables:
 
-```bash
-# Dashboard port
-VITE_PORT=4000
-
-# Product Manager remote host URL
-VITE_REMOTE_PRODUCT_MANAGER_HOST=http://localhost:4001
-```
-
-**Environment Variables:**
 - `VITE_PORT` - Port for the dashboard development server (default: 4000)
 - `VITE_REMOTE_PRODUCT_MANAGER_HOST` - Full URL where Product Manager is running (default: http://localhost:4001)
 
 ### Running
 
-1. **Start Product Manager first** (in another terminal):
-   ```bash
-   cd sx-product-manager
-   npm install
-   npm run dev
-   ```
+1. **Install dependencies:**
 
-2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. **Start the dashboard:**
+2. **Start the server:**
+
    ```bash
-   npm run dev
+   npm start
    ```
 
-4. **Access the application:**
+3. **Access the application:**
    Open http://localhost:4000 (or your custom VITE_PORT)
+
+**Full list of available script**
+| Script    | Command             | Description                                                    |
+|-----------|---------------------|----------------------------------------------------------------|
+| `dev`     | `npm run dev`       | Start the development server with hot module replacement      |
+| `start`   | `npm start`         | Run the application for production      |
+| `build`   | `npm run build`     | Build the application for production deployment               |
+| `preview` | `npm run preview`   | Preview the production build locally before deployment       |
 
 ## Architecture
 
 ### Module Federation
+
 This application uses **Module Federation** from Vite to dynamically load remote microfrontends. The Product Manager is loaded as a remote application at runtime, enabling independent development and deployment.
 
 ### State Communication
+
 The dashboard communicates with remote applications using **Custom DOM Events**:
 
 - **Event Listening**: The host app listens for custom events dispatched by remote applications
@@ -61,13 +57,16 @@ The dashboard communicates with remote applications using **Custom DOM Events**:
 - **Decoupled Architecture**: No direct state sharing between applications
 
 ### Custom Event Pattern
+
 Events follow the pattern: `{remote-app-name}:{event-name}`
 
 **Listened Events:**
+
 - `sx-product-manager:product-added` - When a new product is created
 - `sx-product-manager:product-status-toggled` - When product status changes
 
 ### Remote Module Loading
+
 The application uses **RemoteLoader** component for proper handling of remote microfrontend loading:
 
 - **Error Boundaries**: Graceful error handling when remote apps fail to load
@@ -76,6 +75,7 @@ The application uses **RemoteLoader** component for proper handling of remote mi
 - **Lazy Loading**: Remote modules are loaded on-demand using React.lazy()
 
 ### Application Structure
+
 ```
 src/
 ├── components/
@@ -91,6 +91,7 @@ src/
 ```
 
 ### Key Features
+
 - **Live Metrics**: Real-time product statistics (total, active, inactive)
 - **Microfrontend Integration**: Seamless loading of remote Product Manager
 - **Error Resilience**: Continues working even if remote apps fail
