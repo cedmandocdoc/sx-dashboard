@@ -1,4 +1,5 @@
 import { Component, Suspense } from "react";
+import { TestId } from "../lib/TestId";
 
 class RemoteModuleErrorBoundary extends Component<
   { children: React.ReactNode; moduleName: string },
@@ -20,7 +21,7 @@ class RemoteModuleErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col justify-center items-center min-h-[400px] bg-gray-50 p-6 text-center" data-testid="remote-module-error">
+        <div className="flex flex-col justify-center items-center min-h-[400px] bg-gray-50 p-6 text-center" data-testid={TestId.REMOTE_MODULE_ERROR}>
           <div className="mb-6 text-5xl">
             ⚠️
           </div>
@@ -51,7 +52,7 @@ const RemoteModuleLoader = ({
     <RemoteModuleErrorBoundary moduleName={moduleName}>
       <Suspense
         fallback={
-          <div className="flex justify-center items-center min-h-[400px] bg-gray-50" data-testid="remote-module-loading">
+          <div className="flex justify-center items-center min-h-[400px] bg-gray-50" data-testid={TestId.REMOTE_MODULE_LOADING}>
             <div className="text-center">
               <div className="mb-4 text-3xl animate-spin">
                 ⏳

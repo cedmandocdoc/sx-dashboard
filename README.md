@@ -35,12 +35,12 @@ Copy `.env.sample` to `.env` and configure the following variables:
    Open http://localhost:4000 (or your custom VITE_PORT)
 
 **Full list of available script**
-| Script    | Command             | Description                                                    |
+| Script | Command | Description |
 |-----------|---------------------|----------------------------------------------------------------|
-| `dev`     | `npm run dev`       | Start the development server with hot module replacement      |
-| `start`   | `npm start`         | Run the application for production      |
-| `build`   | `npm run build`     | Build the application for production deployment               |
-| `preview` | `npm run preview`   | Preview the production build locally before deployment       |
+| `dev` | `npm run dev` | Start the development server with hot module replacement |
+| `start` | `npm start` | Run the application for production |
+| `build` | `npm run build` | Build the application for production deployment |
+| `preview` | `npm run preview` | Preview the production build locally before deployment |
 
 ## Architecture
 
@@ -99,3 +99,28 @@ src/
 - **Microfrontend Integration**: Seamless loading of remote Product Manager
 - **Error Resilience**: Continues working even if remote apps fail
 - **Responsive Design**: Modern, mobile-friendly interface
+
+## Testing
+
+### Available Test Scripts
+
+| Script            | Command                   | Description                               |
+| ----------------- | ------------------------- | ----------------------------------------- |
+| `test:e2e`        | `npm run test:e2e`        | Run all e2e tests in headless mode        |
+| `test:e2e:update` | `npm run test:e2e:update` | Run all e2e tests with updating snapshots |
+
+### Quick Start
+
+```bash
+# Install Playwright browsers (one-time setup)
+npx playwright install
+
+# Run all tests
+npm run test:e2e
+
+# Run all tests with update snapshots
+npm run test:e2e:update
+```
+
+## Note
+Make sure the remote [Product Manager](https://github.com/cedmandocdoc/sx-product-manager) is running when running tests
