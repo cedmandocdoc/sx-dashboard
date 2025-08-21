@@ -1,23 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TestId } from '../../src/lib/TestId';
 
-const TEST_DATA = {
-  VALID_PRODUCTS: [
-    {
-      title: 'Dashboard Test Product',
-      sku: 'DASH-001',
-      price: '49.99',
-      status: 'active' as const,
-    },
-    {
-      title: 'Integration Test Widget',
-      sku: 'DASH-002',
-      price: '75.00',
-      status: 'inactive' as const,
-    },
-  ],
-} as const;
-
 test.describe('Dashboard Integration - Happy Path', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
@@ -43,7 +26,12 @@ test.describe('Dashboard Integration - Happy Path', () => {
     await expect(page.getByTestId(TestId.PRODUCT_FORM)).toBeVisible({ timeout: 10000 });
     
     // Add first product
-    const product1 = TEST_DATA.VALID_PRODUCTS[0];
+    const product1 = {
+      title: 'Dashboard Test Product',
+      sku: 'DASH-001',
+      price: '49.99',
+      status: 'active' as const,
+    };
     await page.getByTestId(TestId.TITLE_INPUT).fill(product1.title);
     await page.getByTestId(TestId.SKU_INPUT).fill(product1.sku);
     await page.getByTestId(TestId.PRICE_INPUT).fill(product1.price);
@@ -59,7 +47,12 @@ test.describe('Dashboard Integration - Happy Path', () => {
     await expect(page.getByTestId(TestId.INACTIVE_PRODUCTS_METRIC)).toContainText('0');
     
     // Add second product (inactive)
-    const product2 = TEST_DATA.VALID_PRODUCTS[1];
+    const product2 = {
+      title: 'Integration Test Widget',
+      sku: 'DASH-002',
+      price: '75.00',
+      status: 'inactive' as const,
+    };
     await page.getByTestId(TestId.TITLE_INPUT).fill(product2.title);
     await page.getByTestId(TestId.SKU_INPUT).fill(product2.sku);
     await page.getByTestId(TestId.PRICE_INPUT).fill(product2.price);
@@ -83,7 +76,20 @@ test.describe('Dashboard Integration - Happy Path', () => {
     await expect(page.getByTestId(TestId.PRODUCT_FORM)).toBeVisible({ timeout: 10000 });
     
     // Add two products (one active, one inactive)
-    const products = TEST_DATA.VALID_PRODUCTS;
+    const products = [
+      {
+        title: 'Dashboard Test Product',
+        sku: 'DASH-001',
+        price: '49.99',
+        status: 'active' as const,
+      },
+      {
+        title: 'Integration Test Widget',
+        sku: 'DASH-002',
+        price: '75.00',
+        status: 'inactive' as const,
+      },
+    ];
     for (const product of products) {
       await page.getByTestId(TestId.TITLE_INPUT).fill(product.title);
       await page.getByTestId(TestId.SKU_INPUT).fill(product.sku);
